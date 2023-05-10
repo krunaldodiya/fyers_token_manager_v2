@@ -21,7 +21,7 @@ pip install fyers-token-manager-v2
 from fyers_api import accessToken, fyersModel
 from fyers_api.Websocket import ws
 
-from fyers_token_manager_v2 import FyersTokenManager
+from fyers_token_manager.v2 import FyersTokenManager
 ```
 
 #### Initialization
