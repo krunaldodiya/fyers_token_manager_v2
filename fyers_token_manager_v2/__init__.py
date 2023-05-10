@@ -70,6 +70,17 @@ class FyersTokenManager:
             f.write(token)
 
     def __get_token(self):
+        session = self.__accessToken.SessionModel(
+            client_id=self.client_id,
+            secret_key=self.secret_key,
+            redirect_uri=self.redirect_uri,
+            response_type="code",
+        )
+
+        auth_code = session.generate_authcode()
+
+        print(f"if app is not activated, you can activate using", auth_code)
+
         headers = {
             "Accept": "application/json",
             "Accept-Language": "en-US,en;q=0.9",

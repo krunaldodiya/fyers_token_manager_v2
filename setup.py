@@ -6,7 +6,7 @@ with open("README.md", "r") as f:
 setuptools.setup(
     include_package_data=True,
     name="fyers_token_manager_v2",
-    version="0.0.3",
+    version="0.0.4",
     description="Fyers Token Manager",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -14,9 +14,7 @@ setuptools.setup(
     author="Krunal Dodiya",
     author_email="kunal.dodiya1@gmail.com",
     packages=setuptools.find_packages(),
-    install_requires=[
-        "requests",
-    ],
+    install_requires=["requests", "pyotp"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
