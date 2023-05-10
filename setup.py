@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     include_package_data=True,
-    name="fyers_token_manager",
+    name="fyers_token_manager_v2",
     version="0.0.1",
     description="Fyers Token Manager",
     long_description=long_description,
