@@ -2,17 +2,15 @@ import base64
 import os
 import pyotp
 import requests
+import pathlib
 
 from datetime import datetime
 from urllib.parse import parse_qs, urlparse
 
 current_directory = os.path.dirname(os.path.realpath(__file__))
 
-data_path = os.path.join(current_directory, "data")
-data_file = datetime.now().strftime("%Y-%m-%d")
-fyers_access_token_path = os.path.join(data_path, data_file)
-
-log_path = os.path.join(current_directory, "logs")
+data_path = pathlib.Path(f"{current_directory}/data")
+logs_path = pathlib.Path(f"{current_directory}/logs")
 
 
 class FyersTokenManager:
@@ -28,15 +26,21 @@ class FyersTokenManager:
         self.__fyersModel = fyersModel
         self.__ws = ws
 
-        self.__generate_folders_if_not_exists()
+        self.__set_access_token_file_name()
         self.__initialize()
 
-    def __generate_folders_if_not_exists(self):
-        if not os.path.exists(data_path):
-            os.makedirs(data_path)
+    def __set_access_token_file_name(self):
+        if not data_path.exists():
+            data_path.mkdir()
 
-        if not os.path.exists(log_path):
-            os.makedirs(log_path)
+        if not logs_path.exists():
+            logs_path.mkdir()
+
+        today = datetime.now().strftime("%Y-%m-%d")
+
+        data_file = f"{today}-{self.username}"
+
+        self.access_token_file_name = os.path.join(data_path, data_file)
 
     def __set_initial_values(self, token):
         self.http_access_token = token
@@ -44,11 +48,11 @@ class FyersTokenManager:
         self.ws_access_token = f"{self.client_id}:{self.http_access_token}"
 
         self.http_client = self.__fyersModel.FyersModel(
-            client_id=self.client_id, token=token, log_path=log_path
+            client_id=self.client_id, token=token, log_path=logs_path
         )
 
         self.ws_client = self.__ws.FyersSocket(
-            access_token=self.ws_access_token, run_background=False, log_path=log_path
+            access_token=self.ws_access_token, run_background=False, log_path=logs_path
         )
 
     def __initialize(self):
@@ -60,13 +64,13 @@ class FyersTokenManager:
             self.__set_initial_values(token)
 
     def __read_file(self):
-        with open(f"{fyers_access_token_path}", "r") as f:
+        with open(f"{self.access_token_file_name}", "r") as f:
             token = f.read()
 
         return token
 
     def __write_file(self, token):
-        with open(f"{fyers_access_token_path}", "w") as f:
+        with open(f"{self.access_token_file_name}", "w") as f:
             f.write(token)
 
     def __get_token(self):
