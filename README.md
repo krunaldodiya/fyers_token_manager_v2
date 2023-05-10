@@ -9,13 +9,19 @@ config = {
 }
 ```
 
+## Install
+
+```
+pip install fyers-token-manager-v2
+```
+
 ## Fyers Token Generator
 
 ```
 from fyers_api import accessToken, fyersModel
 from fyers_api.Websocket import ws
 
-from fyers_token_manager.main import FyersTokenManager
+from fyers_token_manager_v2 import FyersTokenManager
 ```
 
 #### Initialization

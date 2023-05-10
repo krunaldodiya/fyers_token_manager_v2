@@ -10,6 +10,7 @@ packages = [{include = "fyers_token_manager"}]
 python = "^3.10"
 twine = "^4.0.2"
 wheel = "^0.40.0"
+pyotp = "^2.8.0"
 
 
 [build-system]
