@@ -31,8 +31,11 @@ class FyersTokenManager:
     def __set_access_token_file_name(self):
         home_directory = os.path.expanduser("~")
 
-        self.__data_path = pathlib.Path(f"{home_directory}/data/{self.username}")
-        self.__logs_path = pathlib.Path(f"{home_directory}/logs")
+        self.__data_path = pathlib.Path(
+            f"{home_directory}/fyers_token_manager/data/{self.username}"
+        )
+
+        self.__logs_path = pathlib.Path(f"{home_directory}/fyers_token_manager/logs")
 
         if not self.__data_path.exists():
             self.__data_path.mkdir(parents=True, exist_ok=True)
