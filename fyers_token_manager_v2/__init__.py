@@ -18,6 +18,7 @@ class FyersTokenManager:
         self.redirect_uri = config["redirect_uri"]
 
         self.__accessToken = accessToken
+
         self.__fyersModel = fyersModel
         self.__ws = ws
 
@@ -27,6 +28,22 @@ class FyersTokenManager:
 
         self.__set_access_token_file_name()
         self.__initialize()
+
+    @property
+    def http_client(self):
+        return self.__fyersModel.FyersModel(
+            client_id=self.client_id,
+            token=self.http_access_token,
+            log_path=self.__logs_path,
+        )
+
+    @property
+    def ws_client(self):
+        return self.__ws.FyersSocket(
+            access_token=self.ws_access_token,
+            run_background=False,
+            log_path=self.__logs_path,
+        )
 
     def __set_access_token_file_name(self):
         home_directory = os.path.expanduser("~")
@@ -51,16 +68,6 @@ class FyersTokenManager:
         self.http_access_token = token
 
         self.ws_access_token = f"{self.client_id}:{self.http_access_token}"
-
-        self.http_client = self.__fyersModel.FyersModel(
-            client_id=self.client_id, token=token, log_path=self.__logs_path
-        )
-
-        self.ws_client = self.__ws.FyersSocket(
-            access_token=self.ws_access_token,
-            run_background=False,
-            log_path=self.__logs_path,
-        )
 
     def __initialize(self):
         try:
